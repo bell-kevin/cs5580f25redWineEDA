@@ -259,16 +259,16 @@ volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
       grid style={line width=.1pt, draw=gray!20},
       major grid style={line width=.2pt,draw=gray!50}
     ]
-      \foreach \q [count=\qi] in {3,4,5,6,7,8} {
-        \addplot+[
-          boxplot,
-          boxplot prepared from table={
-            table={red_wine_quality.csv},
-            column=volatile_acidity,
-            row predicate/.code={\pgfmathparse{int(\thisrow{quality}==\q)}\ifnum\pgfmathresult=1\else\pgfplotstableuserowfalse\fi}
-          }
-        ];
-      }
+        \foreach \q [count=\qi] in {3,4,5,6,7,8} {
+          \addplot+[
+            boxplot,
+            boxplot prepared from table={
+              table={red_wine_quality.csv},
+              column=volatile_acidity,
+              row predicate/.code={\pgfmathparse{int(\thisrow{quality}==\q)}\ifnum\pgfmathresult=1\else\pgfplotstableuserowfalse\fi}
+            }
+          ] coordinates {};
+        }
     \end{axis}
   \end{tikzpicture}
   \caption{Distribution of volatile acidity by quality rating.}
