@@ -21,9 +21,6 @@ summarized in an accompanying LaTeX report.
 4. [Getting Started](#getting-started)
 5. [Running the EDA Script](#running-the-eda-script)
 6. [Working with the LaTeX Report](#working-with-the-latex-report)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Using GitHub Under Protest](#using-github-under-protest)
 
 ## Project Overview
 
