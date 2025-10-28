@@ -34,10 +34,10 @@
 - Move to visualisations:
   - Scatter plot (Figure 1): "The alcohol vs. quality scatter shows a clear positive slope, especially for scores 7 and 8." Mention overlay of colour-coded quality levels.
   - Correlation bar chart (Figure 2): "Alcohol's correlation with quality is 0.48, sulphates 0.25, citric acid 0.23, while volatile acidity is the strongest negative at -0.39."
-  - Box plots (Figure 3) and histogram (Figure 4): "The volatility box plots shrink as quality increases—higher-quality wines keep volatile acidity tight. The sulphate histogram is right-skewed, with a small tail above 1.2 g/dm³."
+  - Box plots (Figure 3): "The volatility box plots tighten as quality increases—higher-quality wines keep volatile acidity within a narrower band."
 
 ## 5:15 – 6:15 · Highlighting an Anomaly or Pattern
-- "One intriguing pattern involves sulphate-heavy wines. That right tail in the sulphate histogram aligns with lower quality ratings in the box plots. These wines might be over-compensating for microbial stability and paying a sensory penalty."
+- "One intriguing pattern involves sulphate-heavy wines. The mean-by-quality table shows sulphates rising with quality up to the mid-tier, but the anomalies we spotted indicate that extreme sulphate levels can coincide with lower quality. These wines might be over-compensating for microbial stability and paying a sensory penalty."
 - "We also observed a handful of high-chloride samples with low quality scores—worth flagging for lab re-checks."
 
 ## 6:15 – 8:00 · Synthesis of Findings
