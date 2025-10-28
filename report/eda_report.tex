@@ -337,11 +337,17 @@ sensory impact.
       ylabel={Count},
       xlabel={Sulphates (g/dm\textsuperscript{3})},
       ymin=0,
+      xmin=0.2,
+      xmax=2.0,
       grid=both,
       grid style={line width=.1pt, draw=gray!20},
       major grid style={line width=.2pt,draw=gray!50},
       ymajorgrids,
-      hist={bins=20}
+      xtick={0.2,0.4,...,2.0},
+      minor x tick num=1,
+      xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1,font=\small,rotate=45,anchor=east},
+      enlarge x limits=0.05,
+      hist={bins=15}
     ]
       \addplot+[ybar interval,mark=none,fill=purple!60,draw=purple!80!black,opacity=0.8] table[
         y=sulphates
