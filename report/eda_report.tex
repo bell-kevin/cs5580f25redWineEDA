@@ -392,22 +392,22 @@ illustrate the tidy structure. The complete CSV file is located in the
   \caption{Excerpt of the red wine quality dataset.}
   \label{tab:data-snippet}
   \pgfplotstabletypeset[
-    columns={fixed\_acidity,volatile\_acidity,citric\_acid,residual\_sugar,chlorides,free\_sulfur\_dioxide,total\_sulfur\_dioxide,density,ph,sulphates,alcohol,quality},
-    columns/fixed\_acidity/.style={column name=Fixed acidity},
-    columns/volatile\_acidity/.style={column name=Volatile acidity},
-    columns/citric\_acid/.style={column name=Citric acid},
-    columns/residual\_sugar/.style={column name=Residual sugar},
-    columns/chlorides/.style={column name=Chlorides},
-    columns/free\_sulfur\_dioxide/.style={column name=Free SO\textsubscript{2}},
-    columns/total\_sulfur\_dioxide/.style={column name=Total SO\textsubscript{2}},
-    columns/density/.style={column name=Density},
-    columns/ph/.style={column name=pH},
-    columns/sulphates/.style={column name=Sulphates},
-    columns/alcohol/.style={column name=Alcohol},
-    columns/quality/.style={column name=Quality},
+    columns={fixed_acidity,volatile_acidity,citric_acid,residual_sugar,chlorides,free_sulfur_dioxide,total_sulfur_dioxide,density,ph,sulphates,alcohol,quality},
+    columns/{fixed_acidity}/.style={column name=Fixed acidity},
+    columns/{volatile_acidity}/.style={column name=Volatile acidity},
+    columns/{citric_acid}/.style={column name=Citric acid},
+    columns/{residual_sugar}/.style={column name=Residual sugar},
+    columns/{chlorides}/.style={column name=Chlorides},
+    columns/{free_sulfur_dioxide}/.style={column name=Free SO\textsubscript{2}},
+    columns/{total_sulfur_dioxide}/.style={column name=Total SO\textsubscript{2}},
+    columns/{density}/.style={column name=Density},
+    columns/{ph}/.style={column name=pH},
+    columns/{sulphates}/.style={column name=Sulphates},
+    columns/{alcohol}/.style={column name=Alcohol},
+    columns/{quality}/.style={column name=Quality},
     every head row/.style={before row=\toprule,after row=\midrule},
     every last row/.style={after row=\bottomrule},
-    row predicate/.code={\ifnum\pgfplotstablerow>14\pgfplotstableuserowfalse\fi}
+    row predicate/.code={\ifnum\pgfplotstablerow>14\relax\pgfplotstableuserowfalse\fi}
   ]{red_wine_quality.csv}
 \end{table}
 
