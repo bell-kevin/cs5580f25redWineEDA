@@ -320,42 +320,6 @@ volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
   \label{fig:vol-acidity-box}
 \end{figure}
 
-Finally, Figure~\ref{fig:sulphates-hist} presents a histogram of sulphate
-concentrations. The distribution is right-skewed with a long tail beyond
-\SI{1.2}{g/dm\textsuperscript{3}}, indicating a subset of wines that rely on
-heavy sulphate additions. These cases align with lower quality ratings in the
-preceding box plots, reinforcing the trade-off between microbial protection and
-sensory impact.
-
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      width=\textwidth,
-      height=7cm,
-      ybar interval,
-      ylabel={Count},
-      xlabel={Sulphates (g/dm\textsuperscript{3})},
-      ymin=0,
-      grid=both,
-      grid style={line width=.1pt, draw=gray!20},
-      major grid style={line width=.2pt,draw=gray!50},
-      ymajorgrids,
-      xtick distance=0.2,
-      xticklabel style={font=\small,rotate=45,anchor=east},
-      xticklabel={\pgfmathprintnumber[fixed,precision=1]{\tick}},
-      enlarge x limits=0.02,
-      hist={bins=20}
-    ]
-      \addplot+[ybar interval,mark=none,fill=purple!60,draw=purple!80!black,opacity=0.8] table[
-        y=sulphates
-      ] {red_wine_quality.csv};
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Histogram of sulphate concentrations.}
-  \label{fig:sulphates-hist}
-\end{figure}
-
 \section{Research and Analysis Plan -- Results}
 The EDA confirms that alcohol, sulphates, and citric acid are leading indicators
 of higher sensory scores, while volatile acidity and excessive sulphur dioxide
