@@ -162,6 +162,8 @@
           y=quality,
           meta=quality
         ] {\redWineDataPath};
+        \addplot+[no marks,very thick,color=red!70!black,domain=8.4:14.9,forget plot]
+          {0.360842 * x + 1.87497};
         \legend{3,4,5,6,7,8}
       \end{axis}
     \end{tikzpicture}
