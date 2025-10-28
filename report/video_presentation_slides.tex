@@ -1,0 +1,265 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{hyperref}
+\usepgfplotslibrary{statistics}
+\pgfplotsset{compat=1.18,table/search path={data,../data}}
+\pgfplotstableset{col sep=comma}
+\sisetup{round-mode=places,round-precision=2}
+
+\title{Exploratory Data Analysis of Red Wine Quality}
+\subtitle{UCI Machine Learning Repository Dataset}
+\author{Kevin Bell}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Agenda}
+  \begin{itemize}
+    \item Motivation and dataset overview
+    \item Three guiding questions and hypotheses
+    \item Evidence from descriptive statistics and visuals
+    \item Key anomalies and synthesis of findings
+    \item Future research plan and closing takeaways
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why This Dataset?}
+  \begin{itemize}
+    \item \textbf{Scope:} \num{1599} Portuguese \emph{Vinho Verde} red wines with \num{11} physicochemical features plus quality score.
+    \item \textbf{Relevance:} Widely cited benchmark that still leaves room for actionable winemaking insights.
+    \item \textbf{Course fit:} Easily satisfies requirements on feature count and observation size.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Definitions}
+  \scriptsize
+  \begin{tabular}{p{0.32\textwidth}p{0.62\textwidth}}
+    \toprule
+    \textbf{Feature} & \textbf{Description} \\
+    \midrule
+    Fixed acidity & Non-volatile acids (g/dm\textsuperscript{3}). \\
+    Volatile acidity & Acetic acid (g/dm\textsuperscript{3}); vinegar aromas. \\
+    Citric acid & Adds freshness and structure (g/dm\textsuperscript{3}). \\
+    Residual sugar & Sugar remaining post-fermentation (g/dm\textsuperscript{3}). \\
+    Chlorides & Salt content (g/dm\textsuperscript{3}). \\
+    Free sulfur dioxide & Protects against oxidation (mg/dm\textsuperscript{3}). \\
+    Total sulfur dioxide & Combined bound and free SO\textsubscript{2} (mg/dm\textsuperscript{3}). \\
+    Density & Proxy for sugar/alcohol balance (g/cm\textsuperscript{3}). \\
+    pH & Acidity (unitless). \\
+    Sulfates & Potassium sulfate (g/dm\textsuperscript{3}); antimicrobial. \\
+    Alcohol & Ethanol percentage by volume. \\
+    Quality & Median sensory rating (3--8 scale). \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{Guiding Questions \\ and Analytical Assumptions}
+  \begin{enumerate}
+    \item Which chemistry attributes best distinguish higher-quality wines?
+    \item How do acidity profiles interact with sulfur management across quality tiers?
+    \item Are there latent subgroups that signal distinct wine styles?
+  \end{enumerate}
+  \vspace{1em}
+  \textbf{Assumptions and biases}
+  \begin{itemize}
+    \item Treat quality score as approximately continuous for correlation work.
+    \item Lab measurements assumed unbiased; focus is chemistry-centric.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Working Hypotheses}
+  \begin{itemize}
+    \item Alcohol and sulfates will correlate positively with quality.
+    \item Volatile acidity will correlate negatively with quality.
+    \item Density and residual sugar play limited roles because most wines are dry.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Summary Statistics Highlights}
+  \small
+  \begin{tabular}{lS[table-format=2.2]S[table-format=1.2]S[table-format=1.2]S[table-format=1.2]S[table-format=1.3]S[table-format=1.2]}
+    \toprule
+    & {Alcohol} & {Vol. acidity} & {Citric acid} & {Sulfates} & {Density} & {pH} \\
+    \midrule
+    Mean & 10.42 & 0.53 & 0.27 & 0.66 & 0.997 & 3.31 \\
+    Std. dev. & 1.07 & 0.18 & 0.20 & 0.17 & 0.002 & 0.15 \\
+  \end{tabular}
+  \vspace{0.75em}
+  \begin{itemize}
+    \item Alcohol and sulfates show the greatest relative spread \textrightarrow{} leverage for quality differentiation.
+    \item Volatile acidity variability flags riskier sensory outcomes.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Means by Quality Tier}
+  \scriptsize
+  \begin{tabular}{cS[table-format=2.2]S[table-format=1.2]S[table-format=1.2]S[table-format=1.2]S[table-format=2.1]}
+    \toprule
+    \textbf{Quality} & {Alcohol} & {Vol. acidity} & {Citric acid} & {Sulfates} & {Total SO\textsubscript{2}} \\
+    \midrule
+    3 & 9.96 & 0.89 & 0.17 & 0.57 & 24.90 \\
+    4 & 10.27 & 0.69 & 0.17 & 0.60 & 36.25 \\
+    5 & 9.90 & 0.58 & 0.24 & 0.62 & 56.51 \\
+    6 & 10.63 & 0.50 & 0.27 & 0.68 & 40.87 \\
+    7 & 11.47 & 0.40 & 0.38 & 0.74 & 35.02 \\
+    8 & 12.09 & 0.42 & 0.39 & 0.77 & 33.44 \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.75em}
+  \begin{itemize}
+    \item Alcohol climbs steadily with quality while volatile acidity drops.
+    \item Total SO\textsubscript{2} peaks at mid-tier quality, pointing to a sweet spot.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Alcohol vs. Quality}
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[
+        width=0.9\textwidth,
+        height=0.55\textheight,
+        xlabel={Alcohol (\%)},
+        ylabel={Quality score},
+        ymin=2.5, ymax=8.5,
+        grid=both,
+        grid style={line width=.1pt, draw=gray!20},
+        major grid style={line width=.2pt,draw=gray!50},
+        scatter/classes={
+          3={mark=*,draw=black,fill=red!60},
+          4={mark=*,draw=black,fill=orange!70},
+          5={mark=*,draw=black,fill=yellow!80!black},
+          6={mark=*,draw=black,fill=green!70!black},
+          7={mark=*,draw=black,fill=blue!70},
+          8={mark=*,draw=black,fill=purple!70}
+        },
+        legend style={draw=none,at={(0.02,0.98)},anchor=north west,font=\scriptsize},
+        legend cell align=left,
+        scatter src=explicit symbolic
+      ]
+        \addplot+[only marks,opacity=0.35] table[
+          x=alcohol,
+          y=quality,
+          meta=quality
+        ] {red_wine_quality.csv};
+        \legend{3,4,5,6,7,8}
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  \vspace{-0.5em}
+  \centering\small Positive slope reinforces alcohol as a top quality discriminator.
+\end{frame}
+
+\pgfplotstableread[col sep=space]{%
+feature correlation
+Alcohol 0.476
+Sulfates 0.251
+Citric_acid 0.226
+Fixed_acidity 0.124
+Residual_sugar 0.014
+Free_sulfur_dioxide -0.051
+pH -0.058
+Chlorides -0.129
+Density -0.175
+Total_sulfur_dioxide -0.185
+Volatile_acidity -0.391
+}{\correlationtable}
+
+\begin{frame}{Feature Correlations with Quality}
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.92\textwidth,
+      height=0.55\textheight,
+      ybar,
+      bar width=8pt,
+      symbolic x coords={Alcohol,Sulfates,Citric_acid,Fixed_acidity,Residual_sugar,Free_sulfur_dioxide,pH,Chlorides,Density,Total_sulfur_dioxide,Volatile_acidity},
+      xtick=data,
+      xticklabel style={rotate=60,anchor=east, font=\scriptsize},
+      xticklabels={Alcohol,Sulfates,Citric acid,Fixed acidity,Residual sugar,Free SO\textsubscript{2},pH,Chlorides,Density,Total SO\textsubscript{2},Volatile acidity},
+      ylabel={Correlation},
+      ymin=-0.45,
+      ymax=0.55,
+      grid=both,
+      grid style={line width=.1pt, draw=gray!15},
+      major grid style={line width=.2pt, draw=gray!45}
+    ]
+      \addplot+ table[x=feature,y=correlation] {\correlationtable};
+    \end{axis}
+  \end{tikzpicture}
+  \vspace{0.5em}
+  \small Alcohol dominates; volatile acidity is the strongest negative signal.
+\end{frame}
+
+\begin{frame}{Volatile Acidity Tightens at Higher Quality}
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.92\textwidth,
+      height=0.55\textheight,
+      boxplot/draw direction=y,
+      xtick={1,2,3,4,5,6},
+      xticklabels={3,4,5,6,7,8},
+      xlabel={Quality score},
+      ylabel={Volatile acidity (g/dm\textsuperscript{3})},
+      grid=both,
+      grid style={line width=.1pt, draw=gray!20},
+      major grid style={line width=.2pt,draw=gray!50}
+    ]
+      \addplot+[boxplot prepared={lower whisker=0.44,lower quartile=0.648,median=0.845,upper quartile=1.01,upper whisker=1.58}] coordinates {};
+      \addplot+[boxplot prepared={lower whisker=0.23,lower quartile=0.53,median=0.67,upper quartile=0.87,upper whisker=1.13}] coordinates {};
+      \addplot+[boxplot prepared={lower whisker=0.18,lower quartile=0.46,median=0.58,upper quartile=0.67,upper whisker=1.33}] coordinates {};
+      \addplot+[boxplot prepared={lower whisker=0.16,lower quartile=0.38,median=0.49,upper quartile=0.60,upper whisker=1.04}] coordinates {};
+      \addplot+[boxplot prepared={lower whisker=0.12,lower quartile=0.30,median=0.37,upper quartile=0.485,upper whisker=0.915}] coordinates {};
+      \addplot+[boxplot prepared={lower whisker=0.26,lower quartile=0.335,median=0.37,upper quartile=0.473,upper whisker=0.85}] coordinates {};
+    \end{axis}
+  \end{tikzpicture}
+  \vspace{0.5em}
+  \small Higher scores cluster at lower, tighter volatility levels.
+\end{frame}
+
+\begin{frame}{Notable Anomalies}
+  \begin{itemize}
+    \item Sulfate-heavy outliers: extreme additions sometimes coincide with lower quality despite average upward trend.
+    \item High-chloride, low-quality samples merit lab re-checks and potential process audits.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Synthesis}
+  \begin{itemize}
+    \item High-scoring wines: higher alcohol, moderate sulfates, elevated citric acid, lower volatile acidity.
+    \item Confirms hypotheses on alcohol (positive) and volatile acidity (negative).
+    \item Two apparent segments: mainstream quality (5--6) vs. premium cluster (7--8).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Future Research and Predictive Plan}
+  \begin{enumerate}
+    \item Build predictive models (regularised regression, gradient boosting, tree ensembles) with key interactions.
+    \item Explore segmentation via Gaussian mixtures or density-based clustering.
+    \item Simulate chemistry adjustments with causal inference tools (e.g., propensity score weighting).
+  \end{enumerate}
+  \vspace{0.5em}
+  \small Additional questions: missing vintage/producer effects? blending strategies to mitigate deficiencies?
+\end{frame}
+
+\begin{frame}{Conclusion}
+  \begin{itemize}
+    \item Met objectives: characterised data, answered core questions, charted next steps.
+    \item Key takeaways: alcohol and balanced sulfates aid quality; volatile acidity detracts; actionable subgroups emerge.
+    \item Thank you! Report and repository contain full reproducible analysis.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[standout]
+  Questions?\newline
+  \small Contact: \href{mailto:bellKevin@pm.me}{bellKevin@pm.me}
+\end{frame}
+
+\end{document}
