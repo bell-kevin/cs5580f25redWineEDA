@@ -7,7 +7,9 @@
 \usepackage{siunitx}
 \usepackage{float}
 \usepackage{microtype}
-\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{statistics}
+\pgfplotsset{compat=1.18,table/search path={../data}}
+\pgfplotstableset{col sep=comma}
 \sisetup{round-mode=places,round-precision=3,detect-weight=true,detect-family=true}
 
 \title{Exploratory Data Analysis of Red Wine Quality}
@@ -149,9 +151,8 @@ are rewarded. The association is strongest for wines rated seven or eight.
       \addplot+[only marks,opacity=0.35] table[
         x=alcohol,
         y=quality,
-        meta=quality,
-        col sep=comma
-      ] {../data/red_wine_quality.csv};
+        meta=quality
+      ] {red_wine_quality.csv};
       \legend{3,4,5,6,7,8}
     \end{axis}
   \end{tikzpicture}
@@ -260,10 +261,9 @@ volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
         \addplot+[
           boxplot,
           boxplot prepared from table={
-            table={../data/red_wine_quality.csv},
+            table={red_wine_quality.csv},
             column=volatile_acidity,
-            row predicate/.code={\pgfmathparse{int(\thisrow{quality}==\q)}\ifnum\pgfmathresult=1\else\pgfplotstableuserowfalse\fi},
-            col sep=comma
+            row predicate/.code={\pgfmathparse{int(\thisrow{quality}==\q)}\ifnum\pgfmathresult=1\else\pgfplotstableuserowfalse\fi}
           }
         ];
       }
@@ -297,9 +297,8 @@ sensory impact.
       hist={bins=20}
     ]
       \addplot+[ybar interval,mark=none,fill=purple!60,draw=purple!80!black,opacity=0.8] table[
-        y=sulphates,
-        col sep=comma
-      ] {../data/red_wine_quality.csv};
+        y=sulphates
+      ] {red_wine_quality.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{Histogram of sulphate concentrations.}
@@ -347,7 +346,6 @@ illustrate the tidy structure. The complete CSV file is located in the
   \caption{Excerpt of the red wine quality dataset.}
   \label{tab:data-snippet}
   \pgfplotstabletypeset[
-    col sep=comma,
     columns={fixed_acidity,volatile_acidity,citric_acid,residual_sugar,chlorides,free_sulfur_dioxide,total_sulfur_dioxide,density,ph,sulphates,alcohol,quality},
     columns/fixed_acidity/.style={column name=Fixed acidity},
     columns/volatile_acidity/.style={column name=Volatile acidity},
@@ -363,8 +361,11 @@ illustrate the tidy structure. The complete CSV file is located in the
     columns/quality/.style={column name=Quality},
     every head row/.style={before row=\toprule,after row=\midrule},
     every last row/.style={after row=\bottomrule},
-    rows={0,...,14}
-  ]{../data/red_wine_quality.csv}
+    row predicate/.code={%
+      \ifnum\pgfplotstablerow<15\relax
+      \else\pgfplotstableuserowfalse\fi
+    }
+  ]{red_wine_quality.csv}
 \end{table}
 
 \end{document}
