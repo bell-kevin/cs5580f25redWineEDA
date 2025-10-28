@@ -407,13 +407,7 @@ illustrate the tidy structure. The complete CSV file is located in the
     columns/quality/.style={column name=Quality},
     every head row/.style={before row=\toprule,after row=\midrule},
     every last row/.style={after row=\bottomrule},
-    row predicate/.code={%
-      \ifnum\pgfplotstablerow<15\relax
-        \pgfplotstableuserowtrue
-      \else
-        \pgfplotstableuserowfalse
-      \fi
-    }
+    skip rows between index={15}{1599}
   ]{red_wine_quality.csv}
 \end{table}
 
