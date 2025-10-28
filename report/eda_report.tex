@@ -341,6 +341,9 @@ sensory impact.
       grid style={line width=.1pt, draw=gray!20},
       major grid style={line width=.2pt,draw=gray!50},
       ymajorgrids,
+      xtick distance=0.2,
+      xticklabel style={font=\small,rotate=45,anchor=east},
+      enlarge x limits=0.02,
       hist={bins=20}
     ]
       \addplot+[ybar interval,mark=none,fill=purple!60,draw=purple!80!black,opacity=0.8] table[
