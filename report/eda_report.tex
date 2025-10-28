@@ -8,9 +8,9 @@
 \usepackage{float}
 \usepackage{microtype}
 \usepgfplotslibrary{statistics}
-\pgfplotsset{compat=1.18,table/search path={../data}}
+\pgfplotsset{compat=1.18,table/search path={data,../data}}
 \pgfplotstableset{col sep=comma}
-\sisetup{round-mode=places,round-precision=3,detect-weight=true,detect-family=true}
+\sisetup{round-mode=places,round-precision=3,reset-text-series=false,text-series-to-math=true,reset-text-family=false,text-family-to-math=true}
 
 \title{Exploratory Data Analysis of Red Wine Quality}
 \author{Group members: Kevin Bell (solo submission)}
@@ -196,18 +196,19 @@ citric acid, whereas volatile acidity is the strongest negative predictor. These
 patterns align with enological expectations: balanced structure and protective
 sulphates are beneficial, while acetic notes detract from perceived quality.
 
-\pgfplotstableread{feature correlation
+\pgfplotstableread[col sep=space]{%
+feature correlation
 Alcohol 0.476
 Sulphates 0.251
-Citric\_acid 0.226
-Fixed\_acidity 0.124
-Residual\_sugar 0.014
-Free\_sulfur\_dioxide -0.051
+Citric_acid 0.226
+Fixed_acidity 0.124
+Residual_sugar 0.014
+Free_sulfur_dioxide -0.051
 pH -0.058
 Chlorides -0.129
 Density -0.175
-Total\_sulfur\_dioxide -0.185
-Volatile\_acidity -0.391
+Total_sulfur_dioxide -0.185
+Volatile_acidity -0.391
 }{\correlationtable}
 
 \begin{figure}[H]
@@ -218,9 +219,10 @@ Volatile\_acidity -0.391
       height=7cm,
       ybar,
       bar width=10pt,
-      symbolic x coords={Alcohol,Sulphates,Citric\_acid,Fixed\_acidity,Residual\_sugar,Free\_sulfur\_dioxide,pH,Chlorides,Density,Total\_sulfur\_dioxide,Volatile\_acidity},
+      symbolic x coords={Alcohol,Sulphates,Citric_acid,Fixed_acidity,Residual_sugar,Free_sulfur_dioxide,pH,Chlorides,Density,Total_sulfur_dioxide,Volatile_acidity},
       xtick=data,
       xticklabel style={rotate=60,anchor=east},
+      xticklabels={Alcohol,Sulphates,Citric acid,Fixed acidity,Residual sugar,Free SO\textsubscript{2},pH,Chlorides,Density,Total SO\textsubscript{2},Volatile acidity},
       ylabel={Correlation with quality},
       ymin=-0.45,
       ymax=0.55,
