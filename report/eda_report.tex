@@ -259,16 +259,60 @@ volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
       grid style={line width=.1pt, draw=gray!20},
       major grid style={line width=.2pt,draw=gray!50}
     ]
-        \foreach \q [count=\qi] in {3,4,5,6,7,8} {
-          \addplot+[
-            boxplot,
-            boxplot prepared from table={
-              table={red_wine_quality.csv},
-              column=volatile_acidity,
-              row predicate/.code={\pgfmathparse{int(\thisrow{quality}==\q)}\ifnum\pgfmathresult=1\else\pgfplotstableuserowfalse\fi}
-            }
-          ] coordinates {};
-        }
+      \addplot+[
+        boxplot prepared={
+          lower whisker=0.44,
+          lower quartile=0.648,
+          median=0.845,
+          upper quartile=1.01,
+          upper whisker=1.58
+        },
+      ] coordinates {};
+      \addplot+[
+        boxplot prepared={
+          lower whisker=0.23,
+          lower quartile=0.53,
+          median=0.67,
+          upper quartile=0.87,
+          upper whisker=1.13
+        },
+      ] coordinates {};
+      \addplot+[
+        boxplot prepared={
+          lower whisker=0.18,
+          lower quartile=0.46,
+          median=0.58,
+          upper quartile=0.67,
+          upper whisker=1.33
+        },
+      ] coordinates {};
+      \addplot+[
+        boxplot prepared={
+          lower whisker=0.16,
+          lower quartile=0.38,
+          median=0.49,
+          upper quartile=0.60,
+          upper whisker=1.04
+        },
+      ] coordinates {};
+      \addplot+[
+        boxplot prepared={
+          lower whisker=0.12,
+          lower quartile=0.30,
+          median=0.37,
+          upper quartile=0.485,
+          upper whisker=0.915
+        },
+      ] coordinates {};
+      \addplot+[
+        boxplot prepared={
+          lower whisker=0.26,
+          lower quartile=0.335,
+          median=0.37,
+          upper quartile=0.473,
+          upper whisker=0.85
+        },
+      ] coordinates {};
     \end{axis}
   \end{tikzpicture}
   \caption{Distribution of volatile acidity by quality rating.}
