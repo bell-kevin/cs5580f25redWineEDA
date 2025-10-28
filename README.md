@@ -20,7 +20,6 @@ summarized in an accompanying LaTeX report.
 3. [Repository Layout](#repository-layout)
 4. [Getting Started](#getting-started)
 5. [Running the EDA Script](#running-the-eda-script)
-6. [Working with the LaTeX Report](#working-with-the-latex-report)
 
 ## Project Overview
 
