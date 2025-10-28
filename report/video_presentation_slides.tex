@@ -11,6 +11,18 @@
 \pgfplotstableset{col sep=comma}
 \sisetup{round-mode=places,round-precision=2}
 
+% Resolve the CSV location regardless of where the slide deck is compiled.
+\newcommand{\redWineDataPath}{}
+\IfFileExists{data/red_wine_quality.csv}{%
+  \renewcommand{\redWineDataPath}{data/red_wine_quality.csv}%
+}{%
+  \IfFileExists{../data/red_wine_quality.csv}{%
+    \renewcommand{\redWineDataPath}{../data/red_wine_quality.csv}%
+  }{%
+    \PackageWarning{video_presentation_slides}{Data file red\_wine\_quality.csv not found; plots will be empty.}%
+  }%
+}
+
 \title{Exploratory Data Analysis of Red Wine Quality}
 \subtitle{UCI Machine Learning Repository Dataset}
 \author{Kevin Bell}
@@ -149,7 +161,7 @@
           x=alcohol,
           y=quality,
           meta=quality
-        ] {red_wine_quality.csv};
+        ] {\redWineDataPath};
         \legend{3,4,5,6,7,8}
       \end{axis}
     \end{tikzpicture}
