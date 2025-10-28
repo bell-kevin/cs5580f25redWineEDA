@@ -25,7 +25,7 @@ This report documents a comprehensive exploratory data analysis (EDA) of the UCI
 Machine Learning Repository's red wine quality dataset. The analysis examines
 the physicochemical properties that influence perceived wine quality, evaluates
 assumptions and hypotheses about the data generating process, and outlines next
-steps for predictive modelling. All computations were performed with reproducible
+steps for predictive modeling. All computations were performed with reproducible
 Python scripts included in the project repository, and the figures in this
 document are generated directly from the source data to avoid dependency on
 binary assets.
@@ -33,7 +33,7 @@ binary assets.
 
 \section{Introduction -- Data Description}
 The red wine quality dataset comprises \num{1599} Portuguese \emph{Vinho Verde}
-wines characterised by \num{11} physicochemical measurements and a sensory
+wines characterized by \num{11} physicochemical measurements and a sensory
 quality rating on a \numrange{3}{8} integer scale. Each observation corresponds
 to a unique laboratory analysis of a batch of wine. The dataset was selected
 because it satisfies the course requirements (more than ten features and five
@@ -41,8 +41,8 @@ hundred observations), is publicly accessible without authentication, and has
 been widely studied, enabling comparisons between this work and the broader data
 science literature.
 
-Table~\ref{tab:feature-definitions} summarises the feature definitions.
-The measurements capture acidity, residual sugars, sulphur compounds, alcohol
+Table~\ref{tab:feature-definitions} summarizes the feature definitions.
+The measurements capture acidity, residual sugars, sulfur compounds, alcohol
 content, density, and pH. These factors collectively determine a wine's
 structure, aromatic profile, and stability. The quality score, provided by
 trained sensory assessors, serves as the primary response variable of interest.
@@ -56,15 +56,15 @@ trained sensory assessors, serves as the primary response variable of interest.
     \textbf{Feature} & \textbf{Description} \\
     \midrule
     Fixed acidity & Concentration of non-volatile acids (g/dm\textsuperscript{3}). \\
-    Volatile acidity & Acetic acid content (g/dm\textsuperscript{3}); high values lead to vinegar flavours. \\
+    Volatile acidity & Acetic acid content (g/dm\textsuperscript{3}); high values lead to vinegar flavors. \\
     Citric acid & Citric acid concentration (g/dm\textsuperscript{3}); adds freshness and structure. \\
     Residual sugar & Sugar remaining after fermentation (g/dm\textsuperscript{3}). \\
     Chlorides & Salt concentration (g/dm\textsuperscript{3}). \\
-    Free sulphur dioxide & Free SO\textsubscript{2} (mg/dm\textsuperscript{3}); protects against oxidation and microbial spoilage. \\
-    Total sulphur dioxide & Combined bound and free SO\textsubscript{2} (mg/dm\textsuperscript{3}). \\
+    Free sulfur dioxide & Free SO\textsubscript{2} (mg/dm\textsuperscript{3}); protects against oxidation and microbial spoilage. \\
+    Total sulfur dioxide & Combined bound and free SO\textsubscript{2} (mg/dm\textsuperscript{3}). \\
     Density & Liquid density (g/cm\textsuperscript{3}), closely linked to sugar and alcohol levels. \\
     pH & Acidity level (unitless). \\
-    Sulphates & Potassium sulphate concentration (g/dm\textsuperscript{3}); contributes to antimicrobial stability. \\
+    Sulfates & Potassium sulfate concentration (g/dm\textsuperscript{3}); contributes to antimicrobial stability. \\
     Alcohol & Ethanol percentage by volume. \\
     Quality & Median of sensory panel ratings on a scale from three (poor) to eight (excellent). \\
     \bottomrule
@@ -72,11 +72,11 @@ trained sensory assessors, serves as the primary response variable of interest.
 \end{table}
 
 \section{Questions -- Assumptions -- Hypotheses}
-The EDA prioritised the following data science questions:
+The EDA prioritized the following data science questions:
 \begin{enumerate}
   \item \textbf{Which physicochemical attributes most strongly distinguish higher-quality wines?} This question directly informs winemaking decisions aimed at improving quality and is therefore the top priority.
-  \item \textbf{How do acidity profiles interact with sulphur compounds across quality levels?} Understanding these interactions aids in balancing freshness with microbial stability.
-  \item \textbf{Are there latent subgroups of wines with distinct compositions that could motivate segmentation or targeted modelling?} Detecting subgroups supports tailored recommendations and motivates future clustering or predictive work.
+  \item \textbf{How do acidity profiles interact with sulfur compounds across quality levels?} Understanding these interactions aids in balancing freshness with microbial stability.
+  \item \textbf{Are there latent subgroups of wines with distinct compositions that could motivate segmentation or targeted modeling?} Detecting subgroups supports tailored recommendations and motivates future clustering or predictive work.
 \end{enumerate}
 
 Two main assumptions underpin the analysis. First, sensory quality scores are
@@ -86,15 +86,15 @@ without systematic bias. Potential observer bias arises because the analysis
 focuses on chemical drivers of quality and does not incorporate viticultural or
 sensory descriptors beyond the provided score.
 
-The working hypotheses are that (i) alcohol and sulphate levels will have
+The working hypotheses are that (i) alcohol and sulfate levels will have
 positive associations with quality, (ii) excessive volatile acidity will be
-penalised by tasters, and (iii) density and residual sugar will have limited
+penalized by tasters, and (iii) density and residual sugar will have limited
 importance because the dataset predominantly contains dry wines.
 
-\section{Visualisation -- Statistics}
+\section{Visualization -- Statistics}
 \subsection{Exploratory Statistics}
 Table~\ref{tab:summary-stats} reports central tendency and dispersion metrics
-for six representative features. Alcohol content and sulphate levels exhibit the
+for six representative features. Alcohol content and sulfate levels exhibit the
 largest relative variability, hinting at potential leverage in differentiating
 quality. Volatile acidity shows a pronounced spread, suggesting opportunities to
 identify outliers that could harm sensory perception.
@@ -111,7 +111,7 @@ identify outliers that could harm sensory perception.
                   S[table-format=1.3]
                   S[table-format=1.3]}
     \toprule
-    & {Alcohol} & {Volatile acidity} & {Citric acid} & {Sulphates} & {Density} & {pH} \\
+    & {Alcohol} & {Volatile acidity} & {Citric acid} & {Sulfates} & {Density} & {pH} \\
     \midrule
     Mean   & 10.423 & 0.528 & 0.271 & 0.658 & 0.997 & 3.311 \\
     Median & 10.200 & 0.520 & 0.260 & 0.620 & 0.997 & 3.310 \\
@@ -120,7 +120,7 @@ identify outliers that could harm sensory perception.
   \end{tabular}
 \end{table}
 
-Figure~\ref{fig:alcohol-quality-scatter} visualises the relationship between
+Figure~\ref{fig:alcohol-quality-scatter} visualizes the relationship between
 alcohol content and quality. A clear positive slope is visible, supporting the
 hypothesis that higher alcohol concentrations (a proxy for ripeness and body)
 are rewarded. The association is strongest for wines rated seven or eight.
@@ -162,9 +162,9 @@ are rewarded. The association is strongest for wines rated seven or eight.
 \end{figure}
 
 Table~\ref{tab:quality-means} details mean chemistry measurements by quality
-rating. Alcohol and sulphates steadily increase with quality, while volatile
-acidity decreases markedly. Total sulphur dioxide peaks at quality five before
-declining, suggesting that moderate SO\textsubscript{2} management is favourable
+rating. Alcohol and sulfates steadily increase with quality, while volatile
+acidity decreases markedly. Total sulfur dioxide peaks at quality five before
+declining, suggesting that moderate SO\textsubscript{2} management is favorable
 but excessive additions are detrimental.
 
 \begin{table}[H]
@@ -178,7 +178,7 @@ but excessive additions are detrimental.
                   S[table-format=1.3]
                   S[table-format=2.3]}
     \toprule
-    Quality & {Alcohol} & {Volatile acidity} & {Citric acid} & {Sulphates} & {Total SO\textsubscript{2}} \\
+    Quality & {Alcohol} & {Volatile acidity} & {Citric acid} & {Sulfates} & {Total SO\textsubscript{2}} \\
     \midrule
     3 & 9.955 & 0.885 & 0.171 & 0.570 & 24.900 \\
     4 & 10.265 & 0.694 & 0.174 & 0.596 & 36.245 \\
@@ -191,16 +191,16 @@ but excessive additions are detrimental.
 \end{table}
 
 \subsection{Visual Analytics}
-Figure~\ref{fig:correlation-bar} summarises feature correlations with quality.
-Alcohol exhibits the largest positive correlation, followed by sulphates and
+Figure~\ref{fig:correlation-bar} summarizes feature correlations with quality.
+Alcohol exhibits the largest positive correlation, followed by sulfates and
 citric acid, whereas volatile acidity is the strongest negative predictor. These
 patterns align with enological expectations: balanced structure and protective
-sulphates are beneficial, while acetic notes detract from perceived quality.
+sulfates are beneficial, while acetic notes detract from perceived quality.
 
 \pgfplotstableread[col sep=space]{%
 feature correlation
 Alcohol 0.476
-Sulphates 0.251
+Sulfates 0.251
 Citric_acid 0.226
 Fixed_acidity 0.124
 Residual_sugar 0.014
@@ -220,10 +220,10 @@ Volatile_acidity -0.391
       height=7cm,
       ybar,
       bar width=10pt,
-      symbolic x coords={Alcohol,Sulphates,Citric_acid,Fixed_acidity,Residual_sugar,Free_sulfur_dioxide,pH,Chlorides,Density,Total_sulfur_dioxide,Volatile_acidity},
+      symbolic x coords={Alcohol,Sulfates,Citric_acid,Fixed_acidity,Residual_sugar,Free_sulfur_dioxide,pH,Chlorides,Density,Total_sulfur_dioxide,Volatile_acidity},
       xtick=data,
       xticklabel style={rotate=60,anchor=east},
-      xticklabels={Alcohol,Sulphates,Citric acid,Fixed acidity,Residual sugar,Free SO\textsubscript{2},pH,Chlorides,Density,Total SO\textsubscript{2},Volatile acidity},
+      xticklabels={Alcohol,Sulfates,Citric acid,Fixed acidity,Residual sugar,Free SO\textsubscript{2},pH,Chlorides,Density,Total SO\textsubscript{2},Volatile acidity},
       ylabel={Correlation with quality},
       ymin=-0.45,
       ymax=0.55,
@@ -239,7 +239,7 @@ Volatile_acidity -0.391
   \label{fig:correlation-bar}
 \end{figure}
 
-The acidity--sulphates interaction is further illustrated in
+The acidity--sulfates interaction is further illustrated in
 Figure~\ref{fig:vol-acidity-box}. Wines are stratified by quality and display the
 spread of volatile acidity values. Higher-quality wines concentrate at lower
 volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
@@ -321,35 +321,35 @@ volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
 \end{figure}
 
 \section{Research and Analysis Plan -- Results}
-The EDA confirms that alcohol, sulphates, and citric acid are leading indicators
-of higher sensory scores, while volatile acidity and excessive sulphur dioxide
+The EDA confirms that alcohol, sulfates, and citric acid are leading indicators
+of higher sensory scores, while volatile acidity and excessive sulfur dioxide
 suppress quality. Observable clusters emerge in the alcohol--quality scatter and
 in the volatile acidity box plots, suggesting that wines rated seven or higher
-form a distinct subgroup characterised by higher alcohol, lower volatile acidity,
-and moderate sulphates.
+form a distinct subgroup characterized by higher alcohol, lower volatile acidity,
+and moderate sulfates.
 
 Future analysis will focus on three directions:
 \begin{itemize}
-  \item \textbf{Predictive modelling:} Train regularised linear models, gradient boosting, and tree-based ensembles to predict quality. Feature engineering will incorporate interaction terms such as alcohol--density and sulphates--volatile acidity.
-  \item \textbf{Segmentation:} Apply Gaussian mixture modelling or density-based clustering on standardised features to uncover latent wine styles. Cluster profiles will be compared against the quality ratings to identify segments requiring tailored interventions.
+  \item \textbf{Predictive modeling:} Train regularized linear models, gradient boosting, and tree-based ensembles to predict quality. Feature engineering will incorporate interaction terms such as alcohol--density and sulfates--volatile acidity.
+  \item \textbf{Segmentation:} Apply Gaussian mixture modeling or density-based clustering on standardized features to uncover latent wine styles. Cluster profiles will be compared against the quality ratings to identify segments requiring tailored interventions.
   \item \textbf{Experimental design:} Simulate adjustments to fermentation parameters (e.g., target volatile acidity reductions) to estimate potential quality improvements, leveraging causal inference techniques such as propensity score weighting.
 \end{itemize}
 
 Anomalies detected during the EDA include high-chloride wines with suppressed
-quality and a small set of high-sulphate, low-quality observations that merit
+quality and a small set of high-sulfate, low-quality observations that merit
 further laboratory validation. Additional questions raised include the role of
 vintage or producer effects (not captured in the dataset) and whether blending
 strategies could mitigate identified deficiencies.
 
 \section{Conclusion}
 The analysis satisfied the project objectives by (i) describing the dataset and
-its feature space, (ii) addressing three prioritised questions with supporting
-statistics and visualisations, and (iii) outlining next steps for predictive and
+its feature space, (ii) addressing three prioritized questions with supporting
+statistics and visualizations, and (iii) outlining next steps for predictive and
 experimental follow-up. Key takeaways include the strong positive influence of
-alcohol and sulphates on quality, the detrimental effect of volatile acidity,
-and the nuanced relationship between sulphur management and sensory outcomes.
-These findings provide actionable guidance for winemakers seeking to optimise
-chemistry profiles and lay the groundwork for more advanced modelling.
+alcohol and sulfates on quality, the detrimental effect of volatile acidity,
+and the nuanced relationship between sulfur management and sensory outcomes.
+These findings provide actionable guidance for winemakers seeking to optimize
+chemistry profiles and lay the groundwork for more advanced modeling.
 
 \section*{Appendix}
 Table~\ref{tab:data-snippet} provides a dataset excerpt with headers to
@@ -362,7 +362,7 @@ illustrate the tidy structure. The complete CSV file is located in the
   \label{tab:data-snippet}
   \resizebox{\textwidth}{!}{%%
     \pgfplotstabletypeset[
-      columns={fixed_acidity,volatile_acidity,citric_acid,residual_sugar,chlorides,free_sulfur_dioxide,total_sulfur_dioxide,density,ph,sulphates,alcohol,quality},
+      columns={fixed_acidity,volatile_acidity,citric_acid,residual_sugar,chlorides,free_sulfur_dioxide,total_sulfur_dioxide,density,ph,sulfates,alcohol,quality},
       columns/{fixed_acidity}/.style={column name=Fixed acidity},
       columns/{volatile_acidity}/.style={column name=Volatile acidity},
       columns/{citric_acid}/.style={column name=Citric acid},
@@ -372,7 +372,7 @@ illustrate the tidy structure. The complete CSV file is located in the
       columns/{total_sulfur_dioxide}/.style={column name=Total SO\textsubscript{2}},
       columns/{density}/.style={column name=Density},
       columns/{ph}/.style={column name=pH},
-      columns/{sulphates}/.style={column name=Sulphates},
+      columns/{sulfates}/.style={column name=Sulfates},
       columns/{alcohol}/.style={column name=Alcohol},
       columns/{quality}/.style={column name=Quality},
       every head row/.style={before row=\toprule,after row=\midrule},
