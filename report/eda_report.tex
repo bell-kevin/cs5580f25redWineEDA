@@ -409,7 +409,10 @@ illustrate the tidy structure. The complete CSV file is located in the
     every last row/.style={after row=\bottomrule},
     row predicate/.code={%
       \ifnum\pgfplotstablerow<15\relax
-      \else\pgfplotstableuserowfalse\fi
+        \pgfplotstableuserowtrue
+      \else
+        \pgfplotstableuserowfalse
+      \fi
     }
   ]{red_wine_quality.csv}
 \end{table}
