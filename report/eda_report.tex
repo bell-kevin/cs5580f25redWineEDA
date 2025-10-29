@@ -409,7 +409,12 @@ PC1 contrasts structural acidity (fixed and citric acids, density) against
 softer attributes (pH, alcohol), while PC2 is dominated by sulfur management
 variables (free and total SO\textsubscript{2}) and residual sugar. These loadings
 align with the interaction analysis---wines that balance acidity with measured
-sulfur additions tend to score higher.
+sulfur additions tend to score higher. To translate these signals into an
+explicit segmentation, the standardized features were clustered with a
+deterministic k-means procedure across \numrange{2}{5} segments
+(Table~\ref{tab:kmeans-eval}). The two-cluster solution achieved the highest
+silhouette (0.207), separating a premium chemistry profile from a mainstream
+one.
 
 \pgfmathsetmacro{\meanfixed}{8.319637}
 \pgfmathsetmacro{\stdfixed}{1.740552}
@@ -528,7 +533,9 @@ Table~\ref{tab:pca-loadings} highlights the dominant loadings that differentiate
 wine styles along PC1 and PC2. High-quality wines (scores seven and eight) form a
 compact cluster with positive PC1 scores and moderate PC2 values, signaling a
 blend of balanced acidity, controlled volatile acidity, and measured sulfur
-additions.
+additions. Mapping the k-means assignments back to the source features shows a
+premium chemistry profile with higher alcohol, lower volatile acidity, and more
+targeted sulphate additions than the mainstream cluster.
 
 \begin{table}[H]
   \centering
@@ -566,19 +573,51 @@ additions.
   \end{tabular}
 \end{table}
 
+\begin{table}[H]
+  \centering
+  \caption{K-means evaluation metrics on standardized chemistry features.}
+  \label{tab:kmeans-eval}
+  \begin{tabular}{c S[table-format=1.3] S[table-format=5.2]}
+    \toprule
+    Clusters & {Silhouette} & {Inertia} \\
+    \midrule
+    2 & 0.207 & 14330.94 \\
+    3 & 0.172 & 12884.10 \\
+    4 & 0.145 & 12044.58 \\
+    5 & 0.166 & 10828.29 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Profile of the two-cluster solution (highest silhouette).}
+  \label{tab:kmeans-profile}
+  \begin{tabular}{c S[table-format=4.0] S[table-format=1.2] S[table-format=2.2] S[table-format=1.3] S[table-format=1.3]}
+    \toprule
+    Cluster & {Size} & {Mean quality} & {Mean alcohol (\%)} & {Mean volatile acidity (g/dm\textsuperscript{3})} & {Mean sulphates (g/dm\textsuperscript{3})} \\
+    \midrule
+    1 & 638 & 5.870 & 10.578 & 0.418 & 0.745 \\
+    0 & 961 & 5.481 & 10.320 & 0.601 & 0.600 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \section{Research and Analysis Plan -- Results}
 The EDA confirms that alcohol, sulfates, and citric acid are leading indicators
 of higher sensory scores, while volatile acidity and excessive sulfur dioxide
-suppress quality. Observable clusters emerge in the alcohol--quality scatter,
-the acidity--sulfur interaction plots, and the PCA projection, suggesting that
-wines rated seven or higher form a distinct subgroup characterized by higher
-alcohol, lower volatile acidity, balanced sulfur regimes, and cohesive chemistry
-profiles along the first principal component.
+suppress quality. Observable clusters emerge in the alcohol--quality scatter and
+the acidity--sulfur interaction plots. The PCA projection coupled with
+deterministic k-means quantifies this structure: the highest-silhouette
+segmentation splits the dataset into a \num{638}-wine premium cluster with
+quality \num{5.87} and a \num{961}-wine baseline cluster averaging quality
+\num{5.48}, differentiated primarily by alcohol, volatile acidity, and sulphate
+management (Tables~\ref{tab:kmeans-eval}--\ref{tab:kmeans-profile}).
 
 Future analysis will focus on three directions:
 \begin{itemize}
   \item \textbf{Predictive modeling:} Train regularized linear models, gradient boosting, and tree-based ensembles to predict quality. Feature engineering will incorporate interaction terms such as alcohol--density and sulfates--volatile acidity.
-  \item \textbf{Segmentation:} Apply Gaussian mixture modeling or density-based clustering on standardized features to uncover latent wine styles. Cluster profiles will be compared against the quality ratings to identify segments requiring tailored interventions.
+  \item \textbf{Segmentation:} Extend beyond the two-cluster baseline by fitting Gaussian mixtures or density-based clustering on standardized features, validating results with silhouette and stability diagnostics, and comparing segment chemistry back to the sensory ratings.
   \item \textbf{Experimental design:} Simulate adjustments to fermentation parameters (e.g., target volatile acidity reductions) to estimate potential quality improvements, leveraging causal inference techniques such as propensity score weighting.
 \end{itemize}
 

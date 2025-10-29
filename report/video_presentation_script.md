@@ -54,17 +54,22 @@
   - "Principal component analysis on the standardized chemistry explains 45.7% of variance in the first two axes."
   - "PC1 contrasts structural acids and density against pH and alcohol, while PC2 captures sulfur management and residual sugar."
   - "High-quality wines (scores 7–8) cluster with positive PC1 and moderate PC2, reinforcing the balanced acidity–sulfur profile."
+- Transition to a new table slide summarizing k-means diagnostics (Tables 7 and 8 in the report).
+- Narration continues:
+  - "We standardized the same features and ran deterministic k-means for 2–5 clusters. The two-cluster solution posted the best silhouette at 0.21."
+  - "Cluster 1 contains 638 wines averaging quality 5.87, alcohol 10.58%, volatile acidity 0.42 g/dm³, and sulphates 0.75 g/dm³—our premium chemistry profile."
+  - "Cluster 0 gathers 961 wines at quality 5.48 with lower alcohol and higher volatility. This gives us an actionable segmentation baseline."
 
 ## 7:45 – 9:00 · Synthesis of Findings
 - "Putting the evidence together, we can characterise high-scoring wines as having: higher alcohol, moderate sulphates, elevated citric acid, and notably lower volatile acidity."
 - "These relationships validate our initial hypotheses about alcohol and volatile acidity. Sulphates behave more like a sweet spot variable: moderate boosts quality, but extreme values coincide with outliers unless volatility is low."
-- "The interaction model and PCA projection both reveal two actionable segments—mainstream wines rated 5–6 and a tightly clustered premium group at 7–8 with cohesive chemistry."
+- "The interaction model, PCA projection, and k-means diagnostics reveal two actionable segments: a mainstream cluster of 961 wines around quality 5.5 and a 638-wine premium cluster with disciplined sulphate management." 
 
 ## 9:00 – 10:00 · Future Research & Predictive Plan
 - Display slide titled "Next Steps" with three bullets.
 - Narration:
   - "First, we'll develop predictive models—regularised regression, gradient boosting, and tree ensembles—to estimate quality. We'll include interactions like alcohol with density and sulphates with volatile acidity."
-  - "Second, we'll pursue segmentation via Gaussian mixtures or density-based clustering, seeding the models with the PCA structure we observed."
+  - "Second, we'll extend the segmentation by testing Gaussian mixtures or density-based clustering, using silhouette/stability checks to see whether more than two clusters add explanatory power."
   - "Third, we'll simulate experimental adjustments—for example, targeting lower volatile acidity—to estimate potential gains using causal inference tools such as propensity score weighting."
 - "We also raised new questions: Are there vintage or producer effects missing here? Could blending strategies mitigate the identified deficiencies?"
 
