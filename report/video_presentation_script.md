@@ -24,7 +24,7 @@
 - State assumptions and biases: "We treated the quality score as approximately continuous to enable correlation analyses, and we assumed the lab measurements were unbiased. The main analytical bias is that we focus on chemistry and not viticultural context."
 - Hypotheses: "We expected alcohol and sulphates to correlate positively with quality, volatile acidity to have a negative relationship, and density and residual sugar to play smaller roles because most wines here are dry."
 
-## 3:15 – 5:15 · Visualisations & Summary Statistics
+## 3:15 – 5:30 · Visualisations & Summary Statistics
 - Transition slide titled "Evidence from Descriptive Statistics".
 - Highlight summary table: "Table 1 shows alcohol averaging 10.4% with a standard deviation just over 1%, and volatile acidity centered at 0.53 g/dm³ but with a relatively wide spread of 0.18."
 - Point out at least three distinct statistical insights:
@@ -35,25 +35,40 @@
   - Scatter plot (Figure 1): "The alcohol vs. quality scatter shows a clear positive slope, especially for scores 7 and 8." Mention overlay of colour-coded quality levels.
   - Correlation bar chart (Figure 2): "Alcohol's correlation with quality is 0.48, sulphates 0.25, citric acid 0.23, while volatile acidity is the strongest negative at -0.39."
   - Box plots (Figure 3): "The volatility box plots tighten as quality increases—higher-quality wines keep volatile acidity within a narrower band."
+  - Acidity–sulfur scatter (Figure 4): "Plotting volatile acidity against total sulfur dioxide shows that the heaviest SO₂ additions co-occur with high volatility in lower-quality wines."
+
+## 5:30 – 6:45 · Acidity–Sulfur Interaction Deep Dive
+- Display the sulfur–acidity scatter beside the regression summary table.
+- Scripted callouts:
+  - "To quantify the relationship, we fitted a linear model with volatile acidity, sulphates, and their interaction. It explains about 17.7% of the variance in quality."
+  - "Coefficients: volatile acidity at -1.03, sulphates at +1.20, and their interaction at -0.86. The negative interaction captures diminishing returns from sulphates when volatility is high."
+  - "Quality-specific slopes in Table 5 show sulfur dioxide dropping sharply with volatility for low-quality wines but turning positive by quality 8, indicating elite wines pair measured sulphur with controlled acidity."
 
 ## 5:15 – 6:15 · Highlighting an Anomaly or Pattern
 - "One intriguing pattern involves sulphate-heavy wines. The mean-by-quality table shows sulphates rising with quality up to the mid-tier, but the anomalies we spotted indicate that extreme sulphate levels can coincide with lower quality. These wines might be over-compensating for microbial stability and paying a sensory penalty."
 - "We also observed a handful of high-chloride samples with low quality scores—worth flagging for lab re-checks."
 
-## 6:15 – 8:00 · Synthesis of Findings
-- "Putting the evidence together, we can characterise high-scoring wines as having: higher alcohol, moderate sulphates, elevated citric acid, and notably lower volatile acidity."
-- "These relationships validate our initial hypotheses about alcohol and volatile acidity. Sulphates behave more like a sweet spot variable: moderate boosts quality, but extreme values coincide with outliers."
-- "The clustering cues in the scatter plot and box plots suggest at least two segments—average wines rated 5–6 and a higher-quality cluster at 7–8 with distinct chemistry."
+## 6:45 – 7:45 · Principal Components & Segmentation Signals
+- Display the PCA scatter (Figure 5) alongside the variance and loading tables.
+- Narration:
+  - "Principal component analysis on the standardized chemistry explains 45.7% of variance in the first two axes."
+  - "PC1 contrasts structural acids and density against pH and alcohol, while PC2 captures sulfur management and residual sugar."
+  - "High-quality wines (scores 7–8) cluster with positive PC1 and moderate PC2, reinforcing the balanced acidity–sulfur profile."
 
-## 8:00 – 9:30 · Future Research & Predictive Plan
+## 7:45 – 9:00 · Synthesis of Findings
+- "Putting the evidence together, we can characterise high-scoring wines as having: higher alcohol, moderate sulphates, elevated citric acid, and notably lower volatile acidity."
+- "These relationships validate our initial hypotheses about alcohol and volatile acidity. Sulphates behave more like a sweet spot variable: moderate boosts quality, but extreme values coincide with outliers unless volatility is low."
+- "The interaction model and PCA projection both reveal two actionable segments—mainstream wines rated 5–6 and a tightly clustered premium group at 7–8 with cohesive chemistry."
+
+## 9:00 – 10:00 · Future Research & Predictive Plan
 - Display slide titled "Next Steps" with three bullets.
 - Narration:
   - "First, we'll develop predictive models—regularised regression, gradient boosting, and tree ensembles—to estimate quality. We'll include interactions like alcohol with density and sulphates with volatile acidity."
-  - "Second, we'll pursue segmentation via Gaussian mixtures or density-based clustering to formalise the latent subgroups." 
+  - "Second, we'll pursue segmentation via Gaussian mixtures or density-based clustering, seeding the models with the PCA structure we observed."
   - "Third, we'll simulate experimental adjustments—for example, targeting lower volatile acidity—to estimate potential gains using causal inference tools such as propensity score weighting."
 - "We also raised new questions: Are there vintage or producer effects missing here? Could blending strategies mitigate the identified deficiencies?"
 
-## 9:30 – 10:30 · Conclusion & Call to Action
+## 10:00 – 10:45 · Conclusion & Call to Action
 - "To wrap up, this EDA met our objectives: we characterised the data, answered the three core questions with statistics and visuals, and charted next steps."
 - "Key takeaways: alcohol and balanced sulphates are friends of quality, volatile acidity is a consistent detractor, and there are actionable subgroups to explore." 
 - "Thank you for watching. On behalf of Kevin, Angelie, and Dani, we invite you to check the written report and the repository for reproducible code."
