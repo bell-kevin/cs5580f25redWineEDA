@@ -240,9 +240,12 @@ Volatile_acidity -0.391
 \end{figure}
 
 The acidity--sulfates interaction is further illustrated in
-Figure~\ref{fig:vol-acidity-box}. Wines are stratified by quality and display the
-spread of volatile acidity values. Higher-quality wines concentrate at lower
-volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
+Figures~\ref{fig:vol-acidity-box} and~\ref{fig:acid-sulfur-scatter}. The box plot
+highlights how higher-quality wines concentrate at lower volatile acidity
+levels, whereas lower-quality wines exhibit heavier tails. The accompanying
+scatterplot adds sulfur dioxide into the picture, revealing that excessive
+volatile acidity and elevated sulfur dioxide co-occur primarily among lower
+quality wines.
 
 \pgfplotsset{compat/show suggested version=false}
 \begin{figure}[H]
@@ -320,13 +323,257 @@ volatile acidity levels, whereas lower-quality wines exhibit heavier tails.
   \label{fig:vol-acidity-box}
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=\textwidth,
+      height=7cm,
+      xlabel={Volatile acidity (g/dm\textsuperscript{3})},
+      ylabel={Total SO\textsubscript{2} (mg/dm\textsuperscript{3})},
+      xmin=0, xmax=1.5,
+      ymin=-20, ymax=170,
+      grid=both,
+      grid style={line width=.1pt, draw=gray!20},
+      major grid style={line width=.2pt,draw=gray!50},
+      scatter/classes={
+        3={mark=*,draw=black,fill=red!60},
+        4={mark=*,draw=black,fill=orange!70},
+        5={mark=*,draw=black,fill=yellow!80!black},
+        6={mark=*,draw=black,fill=green!70!black},
+        7={mark=*,draw=black,fill=blue!70},
+        8={mark=*,draw=black,fill=purple!70}
+      },
+      legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+      legend cell align=left,
+      scatter src=explicit symbolic
+    ]
+      \addplot+[only marks,opacity=0.35] table[
+        x=volatile_acidity,
+        y=total_sulfur_dioxide,
+        meta=quality
+      ] {red_wine_quality.csv};
+      \legend{3,4,5,6,7,8}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Joint distribution of volatile acidity and total sulfur dioxide by quality.}
+  \label{fig:acid-sulfur-scatter}
+\end{figure}
+
+To quantify the interaction, a linear model predicting quality from volatile
+acidity, sulphates, and their product yields an \num{0.177} \emph{R}\textsuperscript{2}.
+The negative interaction term indicates diminishing returns from sulphates when
+volatile acidity is elevated. Table~\ref{tab:interaction-coefs} reports the
+coefficients, and Table~\ref{tab:quality-sulfur-response} summarizes how the
+response of sulfur dioxide to volatile acidity shifts across quality levels.
+
+\begin{table}[H]
+  \centering
+  \caption{Linear model coefficients: quality $\sim$ volatile acidity + sulphates + interaction.}
+  \label{tab:interaction-coefs}
+  \begin{tabular}{l S[table-format=1.3]}
+    \toprule
+    Term & {Coefficient} \\
+    \midrule
+    Intercept & 5.684 \\
+    Volatile acidity & -1.033 \\
+    Sulphates & 1.198 \\
+    Volatile acidity $\times$ sulphates & -0.858 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Quality-specific sulfur dioxide response to volatile acidity.}
+  \label{tab:quality-sulfur-response}
+  \begin{tabular}{c S[table-format=3.2] S[table-format=1.3] S[table-format=1.3]}
+    \toprule
+    Quality & {Slope (mg/dm\textsuperscript{3} per g/dm\textsuperscript{3})} & {Correlation} & {Mean sulphates} \\
+    \midrule
+    3 & -27.39 & -0.539 & 0.570 \\
+    4 & -17.04 & -0.136 & 0.596 \\
+    5 & 1.97 & 0.009 & 0.621 \\
+    6 & 7.37 & 0.047 & 0.675 \\
+    7 & 4.69 & 0.021 & 0.741 \\
+    8 & 76.26 & 0.434 & 0.768 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Dimensionality Reduction and Segmentation Signals}
+Principal component analysis (PCA) on the standardized chemistry features
+provides a complementary lens for uncovering latent wine profiles. The first two
+components explain \SI{45.7}{\percent} of the variance (Table~\ref{tab:pca-variance}).
+PC1 contrasts structural acidity (fixed and citric acids, density) against
+softer attributes (pH, alcohol), while PC2 is dominated by sulfur management
+variables (free and total SO\textsubscript{2}) and residual sugar. These loadings
+align with the interaction analysis---wines that balance acidity with measured
+sulfur additions tend to score higher.
+
+\pgfmathsetmacro{\meanfixed}{8.319637}
+\pgfmathsetmacro{\stdfixed}{1.740552}
+\pgfmathsetmacro{\pcafixedone}{-0.489314}
+\pgfmathsetmacro{\pcafixedtwo}{-0.110503}
+\pgfmathsetmacro{\meanvolatile}{0.527821}
+\pgfmathsetmacro{\stdvolatile}{0.179004}
+\pgfmathsetmacro{\pcavolone}{0.238584}
+\pgfmathsetmacro{\pcavoltwo}{0.274930}
+\pgfmathsetmacro{\meancitric}{0.270976}
+\pgfmathsetmacro{\stdcitric}{0.194740}
+\pgfmathsetmacro{\pcacitone}{-0.463632}
+\pgfmathsetmacro{\pcacittwo}{-0.151791}
+\pgfmathsetmacro{\meanresidual}{2.538806}
+\pgfmathsetmacro{\stdresidual}{1.409487}
+\pgfmathsetmacro{\pcaresone}{-0.146107}
+\pgfmathsetmacro{\pcaRestwo}{0.272080}
+\pgfmathsetmacro{\meanchlorides}{0.087467}
+\pgfmathsetmacro{\stdchlorides}{0.047051}
+\pgfmathsetmacro{\pcachlorone}{-0.212247}
+\pgfmathsetmacro{\pcachlortwo}{0.148052}
+\pgfmathsetmacro{\meanfree}{15.874922}
+\pgfmathsetmacro{\stdfree}{10.456886}
+\pgfmathsetmacro{\pcafreeone}{0.036158}
+\pgfmathsetmacro{\pcafreetwo}{0.513567}
+\pgfmathsetmacro{\meantotal}{46.467792}
+\pgfmathsetmacro{\stdtotal}{32.885037}
+\pgfmathsetmacro{\pcatotalone}{-0.023575}
+\pgfmathsetmacro{\pcatotaltwo}{0.569487}
+\pgfmathsetmacro{\meandensity}{0.996747}
+\pgfmathsetmacro{\stddensity}{0.001887}
+\pgfmathsetmacro{\pcadensityone}{-0.395353}
+\pgfmathsetmacro{\pcadensitytwo}{0.233575}
+\pgfmathsetmacro{\meanph}{3.311113}
+\pgfmathsetmacro{\stdph}{0.154338}
+\pgfmathsetmacro{\pcaphone}{0.438520}
+\pgfmathsetmacro{\pcaphtwo}{0.006711}
+\pgfmathsetmacro{\meansulphates}{0.658149}
+\pgfmathsetmacro{\stdsulphates}{0.169454}
+\pgfmathsetmacro{\pcasulphone}{-0.242921}
+\pgfmathsetmacro{\pcasulptwo}{-0.037554}
+\pgfmathsetmacro{\meanalcohol}{10.422983}
+\pgfmathsetmacro{\stdalcohol}{1.065334}
+\pgfmathsetmacro{\pcaalcoholone}{0.113232}
+\pgfmathsetmacro{\pcaalcoholtwo}{-0.386181}
+
+\pgfplotstableread{red_wine_quality.csv}{\pcatable}
+\pgfplotstablecreatecol[
+  create col/expr={
+    ((\thisrow{fixed_acidity}-\meanfixed)/\stdfixed)*\pcafixedone +
+    ((\thisrow{volatile_acidity}-\meanvolatile)/\stdvolatile)*\pcavolone +
+    ((\thisrow{citric_acid}-\meancitric)/\stdcitric)*\pcacitone +
+    ((\thisrow{residual_sugar}-\meanresidual)/\stdresidual)*\pcaresone +
+    ((\thisrow{chlorides}-\meanchlorides)/\stdchlorides)*\pcachlorone +
+    ((\thisrow{free_sulfur_dioxide}-\meanfree)/\stdfree)*\pcafreeone +
+    ((\thisrow{total_sulfur_dioxide}-\meantotal)/\stdtotal)*\pcatotalone +
+    ((\thisrow{density}-\meandensity)/\stddensity)*\pcadensityone +
+    ((\thisrow{ph}-\meanph)/\stdph)*\pcaphone +
+    ((\thisrow{sulphates}-\meansulphates)/\stdsulphates)*\pcasulphone +
+    ((\thisrow{alcohol}-\meanalcohol)/\stdalcohol)*\pcaalcoholone
+  }
+]{pcone}{\pcatable}
+\pgfplotstablecreatecol[
+  create col/expr={
+    ((\thisrow{fixed_acidity}-\meanfixed)/\stdfixed)*\pcafixedtwo +
+    ((\thisrow{volatile_acidity}-\meanvolatile)/\stdvolatile)*\pcavoltwo +
+    ((\thisrow{citric_acid}-\meancitric)/\stdcitric)*\pcacittwo +
+    ((\thisrow{residual_sugar}-\meanresidual)/\stdresidual)*\pcaRestwo +
+    ((\thisrow{chlorides}-\meanchlorides)/\stdchlorides)*\pcachlortwo +
+    ((\thisrow{free_sulfur_dioxide}-\meanfree)/\stdfree)*\pcafreetwo +
+    ((\thisrow{total_sulfur_dioxide}-\meantotal)/\stdtotal)*\pcatotaltwo +
+    ((\thisrow{density}-\meandensity)/\stddensity)*\pcadensitytwo +
+    ((\thisrow{ph}-\meanph)/\stdph)*\pcaphtwo +
+    ((\thisrow{sulphates}-\meansulphates)/\stdsulphates)*\pcasulptwo +
+    ((\thisrow{alcohol}-\meanalcohol)/\stdalcohol)*\pcaalcoholtwo
+  }
+]{pctwo}{\pcatable}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=\textwidth,
+      height=7cm,
+      xlabel={PC1 score},
+      ylabel={PC2 score},
+      grid=both,
+      grid style={line width=.1pt, draw=gray!20},
+      major grid style={line width=.2pt,draw=gray!50},
+      scatter/classes={
+        3={mark=*,draw=black,fill=red!60},
+        4={mark=*,draw=black,fill=orange!70},
+        5={mark=*,draw=black,fill=yellow!80!black},
+        6={mark=*,draw=black,fill=green!70!black},
+        7={mark=*,draw=black,fill=blue!70},
+        8={mark=*,draw=black,fill=purple!70}
+      },
+      legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+      legend cell align=left,
+      scatter src=explicit symbolic
+    ]
+      \addplot+[only marks,opacity=0.35] table[
+        x=pcone,
+        y=pctwo,
+        meta=quality
+      ] {\pcatable};
+      \legend{3,4,5,6,7,8}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Principal component scores colored by quality reveal a compact high-quality cluster.}
+  \label{fig:pca-quality}
+\end{figure}
+
+Table~\ref{tab:pca-variance} shows the explained variance, while
+Table~\ref{tab:pca-loadings} highlights the dominant loadings that differentiate
+wine styles along PC1 and PC2. High-quality wines (scores seven and eight) form a
+compact cluster with positive PC1 scores and moderate PC2 values, signaling a
+blend of balanced acidity, controlled volatile acidity, and measured sulfur
+additions.
+
+\begin{table}[H]
+  \centering
+  \caption{Explained variance for the leading principal components.}
+  \label{tab:pca-variance}
+  \begin{tabular}{l S[table-format=1.3]}
+    \toprule
+    Component & {Variance explained} \\
+    \midrule
+    PC1 & 0.282 \\
+    PC2 & 0.175 \\
+    PC3 & 0.141 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Largest absolute loadings for the first two principal components.}
+  \label{tab:pca-loadings}
+  \begin{tabular}{l S[table-format=1.3] S[table-format=1.3]}
+    \toprule
+    Feature & {PC1 loading} & {PC2 loading} \\
+    \midrule
+    Fixed acidity & -0.489 & -0.111 \\
+    Citric acid & -0.464 & -0.152 \\
+    Density & -0.395 & 0.234 \\
+    pH & 0.439 & 0.007 \\
+    Volatile acidity & 0.239 & 0.275 \\
+    Free SO\textsubscript{2} & 0.036 & 0.514 \\
+    Total SO\textsubscript{2} & -0.024 & 0.569 \\
+    Residual sugar & -0.146 & 0.272 \\
+    Alcohol & 0.113 & -0.386 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \section{Research and Analysis Plan -- Results}
 The EDA confirms that alcohol, sulfates, and citric acid are leading indicators
 of higher sensory scores, while volatile acidity and excessive sulfur dioxide
-suppress quality. Observable clusters emerge in the alcohol--quality scatter and
-in the volatile acidity box plots, suggesting that wines rated seven or higher
-form a distinct subgroup characterized by higher alcohol, lower volatile acidity,
-and moderate sulfates.
+suppress quality. Observable clusters emerge in the alcohol--quality scatter,
+the acidity--sulfur interaction plots, and the PCA projection, suggesting that
+wines rated seven or higher form a distinct subgroup characterized by higher
+alcohol, lower volatile acidity, balanced sulfur regimes, and cohesive chemistry
+profiles along the first principal component.
 
 Future analysis will focus on three directions:
 \begin{itemize}
