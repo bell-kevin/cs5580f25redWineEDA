@@ -54,12 +54,17 @@ read-only when executed.
 ## Repository Layout
 
 ```
+├── AGENTS.md               # Repository-wide engineering guidelines
+├── CODE_OF_CONDUCT.md      # Expectations for participant behavior
+├── CONTRIBUTING.md         # How to propose improvements and fixes
+├── LICENSE                 # Project licensing information
+├── README.md               # Project overview (this document)
+├── SECURITY.md             # Security policy and vulnerability reporting
+├── SUPPORT.md              # Support resources and contact details
 ├── data/                   # Source dataset used for the analysis
-├── report/                 # LaTeX report describing findings and visuals
-├── src/                    # Python utilities for loading and summarizing data
+├── report/                 # LaTeX report, slides, and exported PDFs
 ├── requirements.txt        # Python dependencies (currently only pandas)
-├── CONTRIBUTING.md         # Guidelines for proposing improvements
-└── README.md               # Project overview (this document)
+└── src/                    # Python utilities for loading and summarizing data
 ```
 
 ## Getting Started
