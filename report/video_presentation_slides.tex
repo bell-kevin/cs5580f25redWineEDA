@@ -38,8 +38,8 @@
   \begin{itemize}
     \item Motivation and dataset overview
     \item Three guiding questions and hypotheses
-    \item Evidence from descriptive statistics and visuals
-    \item Key anomalies and synthesis of findings
+    \item Descriptive statistics, visuals, and interaction modeling
+    \item Dimensionality reduction, clustering, and anomalies
     \item Future research plan and closing takeaways
   \end{itemize}
 \end{frame}
@@ -245,11 +245,45 @@ Volatile_acidity -0.391
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Interaction Model Insights}
+  \small
+  \begin{itemize}
+    \item Linear model: quality $=5.68 - 1.03\,\text{(vol. acidity)} + 1.20\,\text{(sulphates)} - 0.86\,\text{(vol. acidity} \times \text{sulphates)}$.
+    \item Model explains \num{17.7}\% of variance; negative interaction captures diminishing sulphate returns.
+    \item High sulphates help only when volatile acidity is under control; guides winemaking trade-offs.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{PCA Signals Latent Styles}
+  \small
+  \begin{itemize}
+    \item First two principal components capture \num{45.7}\% of variance (PC1 \num{28.2}\%, PC2 \num{17.5}\%).
+    \item PC1 contrasts structural acidity and density against pH and alcohol; PC2 emphasizes sulfur management and residual sugar.
+    \item High-quality wines cluster at higher PC1 scores with controlled volatility, confirming balanced chemistry.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Chemistry Clusters}
+  \scriptsize
+  \begin{tabular}{lS[table-format=4.0]S[table-format=1.2]S[table-format=2.2]S[table-format=1.3]S[table-format=1.3]}
+    \toprule
+    \textbf{Cluster} & {Size} & {Mean quality} & {Mean alcohol (\%)} & {Mean vol. acidity} & {Mean sulphates} \\
+    \midrule
+    Premium & 638 & 5.87 & 10.58 & 0.42 & 0.75 \\
+    Baseline & 961 & 5.48 & 10.32 & 0.60 & 0.60 \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.5em}
+  
+  \small 
+  \space Highest silhouette (0.207) separates a premium profile with higher alcohol and managed volatility from the mainstream cohort.
+\end{frame}
+
 \begin{frame}{Synthesis}
   \begin{itemize}
     \item High-scoring wines: higher alcohol, moderate sulfates, elevated citric acid, lower volatile acidity.
-    \item Confirms hypotheses on alcohol (positive) and volatile acidity (negative).
-    \item Two apparent segments: mainstream quality (5--6) vs. premium cluster (7--8).
+    \item Interaction model (\emph{R}\textsuperscript{2}=0.177) shows sulphates lose impact when volatile acidity spikes.
+    \item PCA + k-means isolate a premium cluster (\num{638} wines, mean quality \num{5.87}) distinct from a baseline group (\num{961} wines, \num{5.48}).
   \end{itemize}
 \end{frame}
 
@@ -271,7 +305,7 @@ Volatile_acidity -0.391
   \end{itemize}
 \end{frame}
 
-\begin{frame}[standout]
+\begin{frame}
   Questions?\newline
   \small Team: Kevin Bell, Angelie Reyes-Sosa, Dani Lopez\
 \end{frame}
