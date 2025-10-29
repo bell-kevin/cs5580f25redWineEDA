@@ -16,11 +16,11 @@
 \newcommand{\redWineDataPath}{}
 \IfFileExists{data/red_wine_quality.csv}{%
   \redWineDataAvailabletrue
-  \renewcommand{\redWineDataPath}{data/red_wine_quality.csv}%
+  \edef\redWineDataPath{\detokenize{data/red_wine_quality.csv}}%
 }{%
   \IfFileExists{../data/red_wine_quality.csv}{%
     \redWineDataAvailabletrue
-    \renewcommand{\redWineDataPath}{../data/red_wine_quality.csv}%
+    \edef\redWineDataPath{\detokenize{../data/red_wine_quality.csv}}%
   }{%
     \redWineDataAvailablefalse
     \PackageWarningNoLine{video_presentation_slides}{Data file red\_wine\_quality.csv not found; data-driven plots will show placeholders.}%
