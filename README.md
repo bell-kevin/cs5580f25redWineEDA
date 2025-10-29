@@ -8,10 +8,8 @@ focuses on understanding the physicochemical properties that distinguish higher
 quality wines and provides supporting visualizations and statistics that are
 summarized in an accompanying LaTeX report.
 
-- **Status:** Course assignment submission
 - **Primary language:** Python 3
-- **Key deliverables:** `src/eda_analysis.py`, `report/eda_report.tex`,
-  `data/red_wine_quality.csv`
+- **Key deliverable:** PDF written report with video link
 
 ## Table of Contents
 
