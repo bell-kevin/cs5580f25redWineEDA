@@ -13,19 +13,19 @@
 
 % Resolve the CSV location regardless of where the slide deck is compiled.
 \newcommand{\redWineDataPath}{}
-\IfFileExists{data/red_wine_quality.csv}{%
-  \renewcommand{\redWineDataPath}{data/red_wine_quality.csv}%
+\IfFileExists{redWineQuality.csv}{%
+  \renewcommand{\redWineDataPath}{redWineQuality.csv}%
 }{%
-  \IfFileExists{../data/red_wine_quality.csv}{%
-    \renewcommand{\redWineDataPath}{../data/red_wine_quality.csv}%
+  \IfFileExists{../redWineQuality.csv}{%
+    \renewcommand{\redWineDataPath}{../redWineQuality.csv}%
   }{%
-    \PackageWarning{video_presentation_slides}{Data file red\_wine\_quality.csv not found; plots will be empty.}%
+    \PackageWarning{video_presentation_slides}{Data file redWineQuality.csv not found; plots will be empty.}%
   }%
 }
 
 \title{Exploratory Data Analysis of Red Wine Quality}
 \subtitle{UCI Machine Learning Repository Dataset}
-\author{Kevin Bell \\\ Angelie Reyes-Sosa \\\ Dani Lopez}
+\author{Kevin Bell \\ Angelie Reyes-Sosa \\ Dani Lopez}
 \date{Fall 2025}
 
 \begin{document}
@@ -162,8 +162,6 @@
           y=quality,
           meta=quality
         ] {\redWineDataPath};
-        \addplot+[no marks,very thick,color=red!70!black,domain=8.4:14.9,forget plot]
-          {0.360842 * x + 1.87497};
         \legend{3,4,5,6,7,8}
       \end{axis}
     \end{tikzpicture}
@@ -248,9 +246,9 @@ Volatile_acidity -0.391
 \begin{frame}{Interaction Model Insights}
   \small
   \begin{itemize}
-    \item Linear model: quality $=5.68 - 1.03\,\text{(vol. acidity)} + 1.20\,\text{(sulphates)} - 0.86\,\text{(vol. acidity} \times \text{sulphates)}$.
-    \item Model explains \num{17.7}\% of variance; negative interaction captures diminishing sulphate returns.
-    \item High sulphates help only when volatile acidity is under control; guides winemaking trade-offs.
+    \item Linear model: quality $=5.68 - 1.03\,\text{(vol. acidity)} + 1.20\,\text{(sulfates)} - 0.86\,\text{(vol. acidity} \times \text{sulfates)}$.
+    \item Model explains \num{17.7}\% of variance; negative interaction captures diminishing sulfate returns.
+    \item High sulfates help only when volatile acidity is under control; guides winemaking trade-offs.
   \end{itemize}
 \end{frame}
 
@@ -267,7 +265,7 @@ Volatile_acidity -0.391
   \scriptsize
   \begin{tabular}{lS[table-format=4.0]S[table-format=1.2]S[table-format=2.2]S[table-format=1.3]S[table-format=1.3]}
     \toprule
-    \textbf{Cluster} & {Size} & {Mean quality} & {Mean alcohol (\%)} & {Mean vol. acidity} & {Mean sulphates} \\
+    \textbf{Cluster} & {Size} & {Mean quality} & {Mean alcohol (\%)} & {Mean vol. acidity} & {Mean sulfates} \\
     \midrule
     Premium & 638 & 5.87 & 10.58 & 0.42 & 0.75 \\
     Baseline & 961 & 5.48 & 10.32 & 0.60 & 0.60 \\
@@ -282,7 +280,7 @@ Volatile_acidity -0.391
 \begin{frame}{Synthesis}
   \begin{itemize}
     \item High-scoring wines: higher alcohol, moderate sulfates, elevated citric acid, lower volatile acidity.
-    \item Interaction model (\emph{R}\textsuperscript{2}=0.177) shows sulphates lose impact when volatile acidity spikes.
+    \item Interaction model (\emph{R}\textsuperscript{2}=0.177) shows sulfates lose impact when volatile acidity spikes.
     \item PCA + k-means isolate a premium cluster (\num{638} wines, mean quality \num{5.87}) distinct from a baseline group (\num{961} wines, \num{5.48}).
   \end{itemize}
 \end{frame}
