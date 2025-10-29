@@ -5,8 +5,8 @@
 ---
 
 ## 0:00 – 0:45 · Opening & Agenda
-- "Hi everyone, I'm Kevin Bell, and welcome to our exploratory data analysis of the UCI red wine quality dataset."
-- "In the next ten minutes I'll cover why we selected this dataset, the core questions we investigated, the visual and statistical evidence we gathered, and the key takeaways plus next steps."
+- "Hi everyone, we're Kevin Bell, Angelie Reyes-Sosa, and Dani Lopez, and welcome to our exploratory data analysis of the UCI red wine quality dataset."
+- "In the next ten minutes we'll cover why we selected this dataset, the core questions we investigated, the visual and statistical evidence we gathered, and the key takeaways plus next steps."
 - Display title slide with project title, name, and agenda bullets.
 
 ## 0:45 – 2:00 · Motivation & Dataset Overview
@@ -56,7 +56,7 @@
 ## 9:30 – 10:30 · Conclusion & Call to Action
 - "To wrap up, this EDA met our objectives: we characterised the data, answered the three core questions with statistics and visuals, and charted next steps."
 - "Key takeaways: alcohol and balanced sulphates are friends of quality, volatile acidity is a consistent detractor, and there are actionable subgroups to explore." 
-- "Thank you for watching. For more detail, check the written report and the repository for reproducible code."
+- "Thank you for watching. On behalf of Kevin, Angelie, and Dani, we invite you to check the written report and the repository for reproducible code."
 - End slide with contact info and placeholder for video link.
 
 ---
