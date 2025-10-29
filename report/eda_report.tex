@@ -593,14 +593,16 @@ targeted sulphate additions than the mainstream cluster.
   \centering
   \caption{Profile of the two-cluster solution (highest silhouette).}
   \label{tab:kmeans-profile}
-  \begin{tabular}{c S[table-format=4.0] S[table-format=1.2] S[table-format=2.2] S[table-format=1.3] S[table-format=1.3]}
-    \toprule
-    Cluster & {Size} & {Mean quality} & {Mean alcohol (\%)} & {Mean volatile acidity (g/dm\textsuperscript{3})} & {Mean sulphates (g/dm\textsuperscript{3})} \\
-    \midrule
-    1 & 638 & 5.870 & 10.578 & 0.418 & 0.745 \\
-    0 & 961 & 5.481 & 10.320 & 0.601 & 0.600 \\
-    \bottomrule
-  \end{tabular}
+  \resizebox{\textwidth}{!}{%%
+    \begin{tabular}{c S[table-format=4.0] S[table-format=1.2] S[table-format=2.2] S[table-format=1.3] S[table-format=1.3]}
+      \toprule
+      Cluster & {Size} & {Mean quality} & {Mean alcohol (\%)} & {Mean volatile acidity (g/dm\textsuperscript{3})} & {Mean sulphates (g/dm\textsuperscript{3})} \\
+      \midrule
+      1 & 638 & 5.870 & 10.578 & 0.418 & 0.745 \\
+      0 & 961 & 5.481 & 10.320 & 0.601 & 0.600 \\
+      \bottomrule
+    \end{tabular}
+  }
 \end{table}
 
 \section{Research and Analysis Plan -- Results}
@@ -640,7 +642,8 @@ chemistry profiles and lay the groundwork for more advanced modeling.
 \section*{Appendix}
 Table~\ref{tab:data-snippet} provides a dataset excerpt with headers to
 illustrate the tidy structure. The complete CSV file is located in the
-\texttt{data/} directory of the repository.
+\texttt{data/} directory of the repository and can also be downloaded from the
+\href{https://archive.ics.uci.edu/dataset/186/wine+quality}{UCI Machine Learning Repository}.
 
 \begin{table}[H]
   \centering
