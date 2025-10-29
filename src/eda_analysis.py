@@ -17,7 +17,7 @@ in restricted environments.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Tuple
+from typing import Iterable, Tuple
 
 import numpy as np
 import pandas as pd
@@ -151,8 +151,172 @@ def pca_summary(df: pd.DataFrame) -> Tuple[pd.DataFrame, np.ndarray, pd.DataFram
     return loadings, explained_variance, standardization
 
 
+def _initialize_centroids(values: np.ndarray, k: int, seed: int) -> np.ndarray:
+    """Deterministically initialize centroids using k-means++ style seeding."""
+
+    rng = np.random.default_rng(seed)
+    centroids = np.empty((k, values.shape[1]), dtype=float)
+    # Choose the first centroid uniformly at random
+    first_index = rng.integers(0, values.shape[0])
+    centroids[0] = values[first_index]
+
+    # Subsequent centroids follow k-means++ weighting
+    distances = np.linalg.norm(values - centroids[0], axis=1) ** 2
+    for idx in range(1, k):
+        probabilities = distances / distances.sum()
+        chosen_index = rng.choice(values.shape[0], p=probabilities)
+        centroids[idx] = values[chosen_index]
+        new_distances = np.linalg.norm(values - centroids[idx], axis=1) ** 2
+        distances = np.minimum(distances, new_distances)
+
+    return centroids
+
+
+def _kmeans(
+    values: np.ndarray,
+    k: int,
+    *,
+    seed: int,
+    max_iter: int = 300,
+    tol: float = 1e-4,
+) -> Tuple[np.ndarray, np.ndarray, float]:
+    """Run Lloyd's algorithm and return labels, centroids, and inertia."""
+
+    centroids = _initialize_centroids(values, k, seed=seed)
+    for _ in range(max_iter):
+        # Assignment step
+        distances = np.linalg.norm(values[:, None, :] - centroids[None, :, :], axis=2)
+        labels = np.argmin(distances, axis=1)
+
+        # Update step
+        new_centroids = centroids.copy()
+        for cluster_id in range(k):
+            members = values[labels == cluster_id]
+            if len(members) > 0:
+                new_centroids[cluster_id] = members.mean(axis=0)
+
+        shift = np.linalg.norm(new_centroids - centroids)
+        centroids = new_centroids
+        if shift <= tol:
+            break
+
+    final_distances = np.linalg.norm(values - centroids[labels], axis=1) ** 2
+    inertia = float(final_distances.sum())
+    return labels, centroids, inertia
+
+
+def _silhouette_score(values: np.ndarray, labels: np.ndarray) -> float:
+    """Compute the mean silhouette score for the provided clustering."""
+
+    n_samples = values.shape[0]
+    distances = np.linalg.norm(values[:, None, :] - values[None, :, :], axis=2)
+    silhouettes = np.zeros(n_samples)
+    unique_labels = np.unique(labels)
+
+    for i in range(n_samples):
+        own_label = labels[i]
+        same_mask = labels == own_label
+        same_count = same_mask.sum()
+
+        # Intra-cluster distance
+        if same_count > 1:
+            a = distances[i, same_mask].sum() / (same_count - 1)
+        else:
+            a = 0.0
+
+        # Nearest other cluster
+        b = np.inf
+        for other_label in unique_labels:
+            if other_label == own_label:
+                continue
+            other_mask = labels == other_label
+            if not np.any(other_mask):
+                continue
+            mean_distance = distances[i, other_mask].mean()
+            if mean_distance < b:
+                b = mean_distance
+
+        if np.isinf(b) and a == 0.0:
+            silhouettes[i] = 0.0
+        else:
+            silhouettes[i] = (b - a) / max(a, b)
+
+    return float(silhouettes.mean())
+
+
+def clustering_diagnostics(
+    df: pd.DataFrame,
+    cluster_counts: Iterable[int] = (2, 3, 4, 5),
+    *,
+    seed: int = 42,
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Evaluate k-means clustering for multiple cluster counts."""
+
+    features = [
+        "fixed_acidity",
+        "volatile_acidity",
+        "citric_acid",
+        "residual_sugar",
+        "chlorides",
+        "free_sulfur_dioxide",
+        "total_sulfur_dioxide",
+        "density",
+        "ph",
+        "sulphates",
+        "alcohol",
+    ]
+    values = df[features].to_numpy(dtype=float)
+    standardized = (values - values.mean(axis=0)) / values.std(axis=0, ddof=0)
+
+    evaluations = []
+    chosen_profiles = None
+
+    for k in cluster_counts:
+        labels, _, inertia = _kmeans(standardized, k, seed=seed)
+        silhouette = _silhouette_score(standardized, labels)
+        evaluations.append({"clusters": k, "silhouette": silhouette, "inertia": inertia})
+
+        if chosen_profiles is None or silhouette > chosen_profiles[0]:
+            summary = (
+                df.assign(cluster=labels)[
+                    [
+                        "cluster",
+                        "quality",
+                        "alcohol",
+                        "volatile_acidity",
+                        "sulphates",
+                    ]
+                ]
+                .groupby("cluster")
+                .agg(
+                    size=("quality", "size"),
+                    mean_quality=("quality", "mean"),
+                    mean_alcohol=("alcohol", "mean"),
+                    mean_volatile_acidity=("volatile_acidity", "mean"),
+                    mean_sulphates=("sulphates", "mean"),
+                )
+                .reset_index()
+                .sort_values("mean_quality", ascending=False)
+            )
+            chosen_profiles = (silhouette, k, summary)
+
+    evaluations_df = pd.DataFrame(evaluations).set_index("clusters").sort_index()
+    best_summary = chosen_profiles[2].set_index("cluster")
+
+    print("\nK-means evaluation across cluster counts:")
+    print(evaluations_df)
+    print(
+        f"\nBest-performing clustering: k={chosen_profiles[1]} with silhouette={chosen_profiles[0]:.3f}."
+    )
+    print("Cluster profiles (size and key chemistry means):")
+    print(best_summary)
+
+    return evaluations_df, best_summary
+
+
 if __name__ == "__main__":
     dataframe = load_dataset()
     summarize(dataframe)
     fit_acidity_sulfur_interaction(dataframe)
     pca_summary(dataframe)
+    clustering_diagnostics(dataframe)
