@@ -3,7 +3,7 @@
 # Red Wine Quality Exploratory Data Analysis
 
 This repository contains the source code, dataset, and written report for an
-exploratory data analysis (EDA) of the UCI Red Wine Quality dataset. The work
+exploratory data analysis (EDA) of the [UCI Red Wine Quality dataset](https://archive.ics.uci.edu/dataset/186/wine+quality). The work
 focuses on understanding the physicochemical properties that distinguish higher
 quality wines and provides supporting visualizations and statistics that are
 summarized in an accompanying LaTeX report.
