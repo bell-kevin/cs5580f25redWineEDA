@@ -37,18 +37,18 @@
   - Box plots (Figure 3): "The volatility box plots tighten as quality increases—higher-quality wines keep volatile acidity within a narrower band."
   - Acidity–sulfur scatter (Figure 4): "Plotting volatile acidity against total sulfur dioxide shows that the heaviest SO₂ additions co-occur with high volatility in lower-quality wines."
 
-## 5:30 – 6:45 · Acidity–Sulfur Interaction Deep Dive
+## 5:30 – 6:30 · Acidity–Sulfur Interaction Deep Dive
 - Display the sulfur–acidity scatter beside the regression summary table.
 - Scripted callouts:
   - "To quantify the relationship, we fitted a linear model with volatile acidity, sulphates, and their interaction. It explains about 17.7% of the variance in quality."
   - "Coefficients: volatile acidity at -1.03, sulphates at +1.20, and their interaction at -0.86. The negative interaction captures diminishing returns from sulphates when volatility is high."
   - "Quality-specific slopes in Table 5 show sulfur dioxide dropping sharply with volatility for low-quality wines but turning positive by quality 8, indicating elite wines pair measured sulphur with controlled acidity."
 
-## 5:15 – 6:15 · Highlighting an Anomaly or Pattern
+## 6:30 – 6:50 · Highlighting an Anomaly or Pattern
 - "One intriguing pattern involves sulphate-heavy wines. The mean-by-quality table shows sulphates rising with quality up to the mid-tier, but the anomalies we spotted indicate that extreme sulphate levels can coincide with lower quality. These wines might be over-compensating for microbial stability and paying a sensory penalty."
 - "We also observed a handful of high-chloride samples with low quality scores—worth flagging for lab re-checks."
 
-## 6:45 – 7:45 · Principal Components & Segmentation Signals
+## 6:50 – 7:50 · Principal Components & Segmentation Signals
 - Display the PCA scatter (Figure 5) alongside the variance and loading tables.
 - Narration:
   - "Principal component analysis on the standardized chemistry explains 45.7% of variance in the first two axes."
@@ -60,12 +60,12 @@
   - "Cluster 1 contains 638 wines averaging quality 5.87, alcohol 10.58%, volatile acidity 0.42 g/dm³, and sulphates 0.75 g/dm³—our premium chemistry profile."
   - "Cluster 0 gathers 961 wines at quality 5.48 with lower alcohol and higher volatility. This gives us an actionable segmentation baseline."
 
-## 7:45 – 9:00 · Synthesis of Findings
+## 7:50 – 9:00 · Synthesis of Findings
 - "Putting the evidence together, we can characterise high-scoring wines as having: higher alcohol, moderate sulphates, elevated citric acid, and notably lower volatile acidity."
 - "These relationships validate our initial hypotheses about alcohol and volatile acidity. Sulphates behave more like a sweet spot variable: moderate boosts quality, but extreme values coincide with outliers unless volatility is low."
 - "The interaction model, PCA projection, and k-means diagnostics reveal two actionable segments: a mainstream cluster of 961 wines around quality 5.5 and a 638-wine premium cluster with disciplined sulphate management." 
 
-## 9:00 – 10:00 · Future Research & Predictive Plan
+## 9:00 – 9:50 · Future Research & Predictive Plan
 - Display slide titled "Next Steps" with three bullets.
 - Narration:
   - "First, we'll develop predictive models—regularised regression, gradient boosting, and tree ensembles—to estimate quality. We'll include interactions like alcohol with density and sulphates with volatile acidity."
@@ -73,7 +73,7 @@
   - "Third, we'll simulate experimental adjustments—for example, targeting lower volatile acidity—to estimate potential gains using causal inference tools such as propensity score weighting."
 - "We also raised new questions: Are there vintage or producer effects missing here? Could blending strategies mitigate the identified deficiencies?"
 
-## 10:00 – 10:45 · Conclusion & Call to Action
+## 9:50 – 10:30 · Conclusion & Call to Action
 - "To wrap up, this EDA met our objectives: we characterised the data, answered the three core questions with statistics and visuals, and charted next steps."
 - "Key takeaways: alcohol and balanced sulphates are friends of quality, volatile acidity is a consistent detractor, and there are actionable subgroups to explore." 
 - "Thank you for watching. On behalf of Kevin, Angelie, and Dani, we invite you to check the written report and the repository for reproducible code."
