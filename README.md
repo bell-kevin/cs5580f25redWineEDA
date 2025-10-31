@@ -81,7 +81,7 @@ read-only when executed.
    ```
 
 If you plan to build the report locally, make sure you also have a LaTeX
-distribution (for example, TeX Live or MiKTeX) installed.
+distribution (for example, TeX Live or LaTeX) installed.
 
 ## Running the EDA Script
 
