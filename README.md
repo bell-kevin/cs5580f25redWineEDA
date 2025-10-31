@@ -11,6 +11,8 @@ summarized in an accompanying LaTeX report.
 - **Primary language:** Python 3
 - **Key deliverable:** PDF written report with video link
 
+  https://www.youtube.com/watch?v=sXz4nVK8okU
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
